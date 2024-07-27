@@ -41,19 +41,6 @@ This is a full-stack web application that displays a list of companies and their
 - Docker
 - Docker Compose
 
-## Setup and Installation
-
-1. **Clone the repository**:
-
-   ```sh
-   git clone https://github.com/your-username/company-locator.git
-   cd company-locator
-   ```
-
-2. **Ensure you have the necessary CSV files**:
-   - `backend/data/companies.csv`
-   - `backend/data/locations.csv`
-
 ## Running the Application
 
 1. **Build and run the application** using Docker Compose:
