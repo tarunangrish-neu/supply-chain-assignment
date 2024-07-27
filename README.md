@@ -1,8 +1,4 @@
-Sure, here's a comprehensive `README.md` file for your application:
-
----
-
-# Supply-Chain Company
+# Supply-Chain Company Data Hub
 
 This is a full-stack web application that displays a list of companies and their details, including multiple possible locations. The application uses a Python backend API built with Flask and a React frontend. It is containerized using Docker.
 
