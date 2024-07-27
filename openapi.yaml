@@ -1,0 +1,215 @@
+openapi: 3.0.3
+info:
+  title: Supply Chain - Company List
+  description: |-
+    This is a simple microservice that parses the available CSV files, and provides the details for the List of companies that are being served. It can also provide the details of the locations of the companies and other details. 
+    
+    ### Check out its awesome features:
+
+    * Query the list of the companies available on the platform.
+    * View the company details.
+    * Post the details of the company to be registered on the platform.
+  contact:
+    email: angrish.t@northeastern.edu
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.11
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+servers:
+  - url: https://supply-chain-data-hub.swagger.io/api/v1
+tags:
+  - name: companies
+    description: A comprehensive way to access the list of companies available on our platform
+    externalDocs:
+      description: Find out more
+      url: http://swagger.io
+paths:
+  /companies/list:
+    get:
+      tags:
+        - companies
+      summary: Get the list of all the registered companies on the platform
+      description: Get the list of all the registered companies on the platform
+      operationId: companyList
+      responses:
+        '200':
+          description: Company List Retrieved
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Company'
+              examples:
+                singleCompany:
+                  summary: Single Company
+                  value:
+                    - companyId: 1
+                      companyName: TechNova Solutions
+                      address: 123 Innovation Drive, San Francisco, CA 94105
+                      latitude: 37.7749
+                      longitude: -122.4194
+                multipleCompanies:
+                  summary: Multiple Companies
+                  value:
+                    - companyId: 1
+                      companyName: TechNova Solutions
+                      address: 123 Innovation Drive, San Francisco, CA 94105
+                      latitude: 37.7749
+                      longitude: -122.4194
+                    - companyId: 2
+                      companyName: Innovatech LLC
+                      address: 456 Tech Park, San Jose, CA 95134
+                      latitude: 37.3382
+                      longitude: -121.8863
+                    - companyId: 3
+                      companyName: SoftWorks Inc.
+                      address: 789 Software Blvd, Mountain View, CA 94043
+                      latitude: 37.3861
+                      longitude: -122.0839
+        '400':
+          description: Invalid status value
+  /companies/{companyId}:
+    get:
+      tags:
+        - companies
+      summary: Find company by ID
+      description: Returns a single company
+      operationId: getCompanyById
+      parameters:
+        - name: companyId
+          in: path
+          description: ID of the company to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Company Retrieved by Company ID Param
+          content:
+            application/json:
+              
+              schema:
+                type: array
+                items: 
+                  $ref: '#/components/schemas/CompanyWithLocationDetails'
+              examples:
+                example1:
+                  summary: Example of a company with a single location
+                  value:
+                    companyId: 1
+                    locationId: 1
+                    companyName: TechNova Solutions
+                    address: 123 Innovation Drive, San Francisco, CA 94105
+                    latitude: 37.7749
+                    longitude: -122.4194
+                example2:
+                  summary: Example of a company with multiple locations
+                  value:
+                    companyId: 1
+                    locationId: 2
+                    companyName: TechNova Solutions
+                    address: 456 Market Street, San Francisco, CA 94105
+                    latitude: 37.7849
+                    longitude: -122.4094
+        '400':
+          description: Invalid Company ID Provided
+        '404':
+          description: Company not found
+  /companies/{companyId}/locations/{locationId}:
+    get:
+      tags:
+        - companies
+      summary: Find company Location by ID
+      description: Returns the company with its location
+      operationId: getCompanyLocationByCompanyIdAndLocationId
+      parameters:
+        - name: companyId
+          in: path
+          description: ID of the company to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: locationId
+          in: path
+          description: ID of the company location to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Company Details retrieved with the specific location ID param
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompanyWithLocationDetails'
+              examples:
+                location1:
+                  summary: Company Location 1
+                  value:
+                    companyId: 1
+                    locationId: 1
+                    companyName: TechNova Solutions
+                    address: 123 Innovation Drive, San Francisco, CA 94105
+                    latitude: 37.7749
+                    longitude: -122.4194
+                location2:
+                  summary: Company Location 2
+                  value:
+                    companyId: 1
+                    locationId: 2
+                    companyName: TechNova Solutions
+                    address: 456 Market Street, San Francisco, CA 94105
+                    latitude: 37.7849
+                    longitude: -122.4094
+        '400':
+          description: Invalid company ID or location ID. Please confirm the details.
+        '404':
+          description: Company/Location not found
+components:
+  schemas:
+    Company:
+      type: object
+      properties:
+        companyId:
+          type: integer
+          example: 1
+        companyName:
+          type: string
+          example: TechNova Solutions
+        address:
+          type: string
+          example: 123 Innovation Drive, San Francisco, CA 94105
+        latitude:
+          type: number
+          example: 37.7749
+        longitude:
+          type: number
+          example: -122.4194
+    CompanyWithLocationDetails:
+      type: object
+      properties:
+        companyId:
+          type: integer
+          example: 1
+        locationId:
+          type: integer
+          example: 1
+        companyName:
+          type: string
+          example: TechNova Solutions
+        address:
+          type: string
+          example: 123 Innovation Drive, San Francisco, CA 94105
+        latitude:
+          type: number
+          example: 37.7749
+        longitude:
+          type: number
+          example: -122.4194
